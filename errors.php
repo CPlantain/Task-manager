@@ -20,7 +20,7 @@
 			<?php if(isset($errorMessage)): ?>
 				<p><?php echo $errorMessage; ?></p>
 			<?php else: ?>
-				<p>Заполните все поля.</p>
+				<p>Ошибка.</p>
 			<?php endif; ?>
 			<a href="<?php echo $_SERVER['HTTP_REFERER']; ?>">Назад</a>
 		</div>

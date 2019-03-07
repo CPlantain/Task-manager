@@ -15,7 +15,7 @@ $password = $_POST['password'];
 
 //проверяем инпуты на пустоту 
 foreach ($_POST as $field) {
-	if(strlen($field) <= 0){
+	if(strlen($field) <= 0) {
 		$errorMessage = 'пожалуйста заполните все поля';
 	}
 }
@@ -41,7 +41,7 @@ if(!$errorMessage) {
 }
 
 // вывод ошибки
-if($errorMessage){
+if($errorMessage) {
 	require 'errors.php';
 	exit;
 }
@@ -50,13 +50,20 @@ $password = password_hash($password, PASSWORD_DEFAULT);
 
 
 // делаем запись в базу
-$sql = 'INSERT INTO users(username, email, password) VALUES(:username, :email, :password)';
-$statement = $pdo->prepare($sql);
-$statement->BindValue('username', $username, PDO::PARAM_STR);
-$statement->BindValue('email', $email, PDO::PARAM_STR);
-$statement->BindValue('password', $password, PDO::PARAM_STR);
-$statement->execute();
+try{
+	$sql = 'INSERT INTO users(username, email, password) VALUES(:username, :email, :password)';
+	$statement = $pdo->prepare($sql);
+	$statement->BindValue('username', $username, PDO::PARAM_STR);
+	$statement->BindValue('email', $email, PDO::PARAM_STR);
+	$statement->BindValue('password', $password, PDO::PARAM_STR);
+	$result = $statement->execute();
+}catch(PDOException $e){
+	$errorMessage = 'Регистрация не удалась';
+	require 'errors.php';
+	exit;
+}
 
 header("Location: /login-form.php");
 
 ?>
+
