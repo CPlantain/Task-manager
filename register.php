@@ -48,15 +48,17 @@ if($errorMessage) {
 
 $password = password_hash($password, PASSWORD_DEFAULT);
 
+$data = [
+		'username' => $username,
+		'email' => $email,
+		'password' => $password
+		];
 
 // делаем запись в базу
 try{
 	$sql = 'INSERT INTO users(username, email, password) VALUES(:username, :email, :password)';
 	$statement = $pdo->prepare($sql);
-	$statement->BindValue('username', $username, PDO::PARAM_STR);
-	$statement->BindValue('email', $email, PDO::PARAM_STR);
-	$statement->BindValue('password', $password, PDO::PARAM_STR);
-	$result = $statement->execute();
+	$result = $statement->execute($data);
 }catch(PDOException $e){
 	$errorMessage = 'Регистрация не удалась';
 	require 'errors.php';
