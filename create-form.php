@@ -18,13 +18,11 @@
 
   <body>
     <div class="form-wrapper text-center">
-      <form class="form-signin" action="post.php" method="post" enctype="multipart/form-data">
+      <form class="form-signin" action="create.php" method="post" enctype="multipart/form-data">
         <img class="mb-4" src="assets/img/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Добавить запись</h1>
         <label for="inputTitle" class="sr-only">Название</label>
         <input name="title" type="text" id="inputTitle" class="form-control" placeholder="Название">
-        <label for="inputDescription" class="sr-only">Описание</label>
-        <textarea name="description" class="form-control" cols="30" rows="5" placeholder="Описание"></textarea>
         <label for="inputContent" class="sr-only">Контент</label>
         <textarea name="content" class="form-control" cols="30" rows="10" placeholder="Текст"></textarea>
         <input name="image" type="file">

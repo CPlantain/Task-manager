@@ -25,10 +25,10 @@ if (!$errorMessage) {
 	if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 		$errorMessage = 'некорректный email';
 	}
-}{
+}
 
 // проверяем, есть ли пара емейл + пароль, указанные пользователем
-if (!$errorMessage) 
+if (!$errorMessage){
 	$sql = 'SELECT * FROM users WHERE email=:email';
 	$statement = $pdo->prepare($sql);
 	$statement->BindValue('email', $email, PDO::PARAM_STR);
@@ -51,5 +51,20 @@ if($errorMessage){
 // записываем пользователя в сессию	
 $_SESSION['user'] = $user;
 
-header("Location: /index.php");
+// если пользователь поставил галочку "запомнить меня", устанавливаем куки на месяц
+if($_POST['remember']){
+	$hash = $user['password'];
+	$time = 30 * 86400;
+	setcookie('UserHash', $hash, time() + $time);
+}
+
+// если в массиве пост чекбокс "remember" есть, то устанавливаем куки
+// проверка на каждой странице: сначала проверяем сессию, если она пустая, проверяем куки.
+// если у пользователя есть кука с именем "запомнить", проверяем её содержимое
+// если запрос селект с указанным хэшем возвращает запись, то эту запись добавляю в сессию, иначе редирект на логин
+// при логауте кука удаляется
+
+header("Location: /list.php");
 ?>
+
+

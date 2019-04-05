@@ -26,11 +26,11 @@
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Пароль">
         <div class="checkbox mb-3">
           <label>
-            <input type="checkbox" value="remember-me"> Запомнить меня
+            <input type="checkbox" name="remember" value="remember-me"> Запомнить меня
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
-        <a href="#">Зарегистрироваться</a>
+        <a href="/register-form.php">Зарегистрироваться</a>
         <p class="mt-5 mb-3 text-muted">&copy; 2018-2019</p>
       </form>
     </div>
