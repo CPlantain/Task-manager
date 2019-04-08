@@ -3,6 +3,7 @@
 $user_id = $_SESSION['user']['id'];
 $username = $_SESSION['user']['username'];
 
+// подключение к БД
 try{
   $pdo = new 
   PDO("mysql:host=localhost;dbname=task_manager;charset=utf8", 'root', '');
@@ -10,6 +11,7 @@ try{
   die("Не могу подключиться к базе данных");
 }
 
+//получаем все задачи авторизованного пользователя
 $sql = 'SELECT * FROM tasks WHERE user_id=:user_id';
 $statement = $pdo->prepare($sql);
 $statement->BindValue('user_id', $user_id, PDO::PARAM_INT);
@@ -82,18 +84,21 @@ $tasks = $statement->fetchAll(PDO::FETCH_ASSOC);
                  <div class="col-md-4">
                   <div class="card mb-4 shadow-sm">
                     
+                    <!-- если у задачи есть изображение, выводим его -->
                     <?php if($task['image']) : ?>
                       <img class="card-img-top" src="uploads/<?php echo $task['image']; ?>">
+                      
+                    <!-- если нет, выводим дефолтную картинку -->
                     <?php else : ?>
                       <img class="card-img-top" src="assets/img/no-image.jpg">
-                    <? endif; ?>
+                    <?php endif; ?>
 
                     <div class="card-body">
                       <p class="card-text"><?php echo $task['title']; ?></p>
                       <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                           <a href="show.php?id=<?php echo $task['id']; ?>" class="btn btn-sm btn-outline-secondary">Подробнее</a>
-                          <a href="edit-form.php?=<?php echo $task['id']; ?>" class="btn btn-sm btn-outline-secondary">Изменить</a>
+                          <a href="edit-form.php?id=<?php echo $task['id']; ?>" class="btn btn-sm btn-outline-secondary">Изменить</a>
                           <a href="delete.php?id=<?php echo $task['id']; ?>" class="btn btn-sm btn-outline-secondary" onclick="confirm('are you sure?')">Удалить</a>
                         </div>
                       </div>
@@ -101,7 +106,7 @@ $tasks = $statement->fetchAll(PDO::FETCH_ASSOC);
                   </div>
                 </div>
 
-              <? endforeach; ?>
+              <?php endforeach; ?>
             </div>
         </div>
       </div>

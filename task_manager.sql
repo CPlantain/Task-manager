@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 05 2019 г., 15:08
+-- Время создания: Апр 08 2019 г., 18:55
 -- Версия сервера: 5.7.23
 -- Версия PHP: 7.1.22
 
@@ -41,10 +41,11 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `user_id`, `title`, `content`, `image`) VALUES
-(9, 3, 'qwerty', 'fghfghfghfgh', NULL),
-(10, 3, 'sdfsf', 'sdfdfd', '5c86a584af5df.jpeg'),
-(14, 3, 'dsfcsdf', 'sdfdsf', '5ca7409fb7b42.jpeg'),
-(17, 3, 'efwefsf', 'sdfsdfdsfsdfsdf', NULL);
+(9, 3, 'qwerty', 'fghfghfghfgh', '5cab6c07e110e.jpeg'),
+(10, 3, 'yhtgrfedwsaq', 'fghfghfghfgh', '5cab6e8021070.jpeg'),
+(14, 3, 'vgfcdxsz', 'vcxzcx', '5cab6c4bbf391.jpeg'),
+(17, 3, ';lkiujyhgf', 'fghfghfghfgh', NULL),
+(18, 3, 'kjmnhbgvfcdx', 'fghfghfghfgh', '5cab6e9676d2b.jpeg');
 
 -- --------------------------------------------------------
 
@@ -94,7 +95,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
