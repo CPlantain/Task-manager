@@ -1,4 +1,9 @@
+<?php
+require_once 'config.php';
+// проверяем, авторизован ли пользователь
+if(authorize('user', 'UserHash', $pdo)) redirect('/list.php');
 
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -23,7 +28,7 @@
         <label for="inputName" class="sr-only">Имя</label>
         <input type="text" id="inputName" name="username" class="form-control" placeholder="Имя" autofocus>
         <label for="inputEmail" class="sr-only">Email</label>
-        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email" >
+        <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email" >
         <label for="inputPassword" class="sr-only">Пароль</label>
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Пароль">
         <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрироваться</button>

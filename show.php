@@ -1,23 +1,14 @@
-<?php session_start();
+<?php 
+require_once 'config.php';
+// проверяем, авторизован ли пользователь
+if(!authorize('user', 'UserHash', $pdo)) redirect('/login-form.php');
 
 $user_id = $_SESSION['user']['id'];
 $id = $_GET['id'];
 
-// подключение к БД
-try{
-  $pdo = new 
-  PDO("mysql:host=localhost;dbname=task_manager;charset=utf8", 'root', '');
-}catch(PDOException $e){
-  die("Не могу подключиться к базе данных");
-}
-
 // получаем задачу по id 
-$sql = 'SELECT * FROM tasks WHERE id=:id AND user_id=:user_id';
-$statement = $pdo->prepare($sql);
-$statement->BindValue('id', $id, PDO::PARAM_INT);
-$statement->BindValue('user_id', $user_id, PDO::PARAM_INT);
-$statement->execute();
-$task = $statement->fetch(PDO::FETCH_ASSOC);
+$params = ['id' => $id, 'user_id' => $user_id];
+$task = getOne($pdo, 'tasks', $params);
 
 ?>
 
@@ -42,15 +33,15 @@ $task = $statement->fetch(PDO::FETCH_ASSOC);
 
       <!-- если у задачи есть изображение, выводим его -->
       <?php if($task['image']) : ?>
-        <img class="card-img-top" src="uploads/<?php echo $task['image']; ?>">
+        <img class="card-img-top" src="uploads/<?php echo filter($task['image']); ?>">
 
       <!-- если нет, выводим дефолтную картинку -->
       <?php else : ?>
         <img class="card-img-top" src="assets/img/no-image.jpg">
       <?php endif; ?>
       
-      <h2><?php echo $task['title']; ?></h2>
-      <p><?php echo $task['content']; ?></p>
+      <h2><?php echo filter($task['title']); ?></h2>
+      <p><?php echo filter($task['content']); ?></p>
     </div>
   </body>
 </html>

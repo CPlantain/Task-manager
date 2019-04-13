@@ -1,24 +1,14 @@
 <?php 
-session_start(); 
+require_once 'config.php';
+// проверяем авторизацию
+if(!authorize('user', 'UserHash', $pdo)) redirect('/login-form.php');
 
 $user_id = $_SESSION['user']['id'];
 $id = $_GET['id'];
 
-// подключение к БД
-try{
-  $pdo = new 
-  PDO("mysql:host=localhost;dbname=task_manager;charset=utf8", 'root', '');
-}catch(PDOException $e){
-  die("Не могу подключиться к базе данных");
-}
-
 // получаем задачу по id 
-$sql = 'SELECT * FROM tasks WHERE id=:id AND user_id=:user_id';
-$statement = $pdo->prepare($sql);
-$statement->BindValue('id', $id, PDO::PARAM_INT);
-$statement->BindValue('user_id', $user_id, PDO::PARAM_INT);
-$statement->execute();
-$task = $statement->fetch(PDO::FETCH_ASSOC);
+$params = ['id' => $id, 'user_id' => $user_id];
+$task = getOne($pdo, 'tasks', $params);
 
 ?>
 <!doctype html>
@@ -43,16 +33,16 @@ $task = $statement->fetch(PDO::FETCH_ASSOC);
         <img class="mb-4" src="assets/img/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Изменить запись</h1>
         <label for="inputTitle" class="sr-only">Название</label>
-        <input name="title" type="text"  id="inputTitle" class="form-control" placeholder="Название" value="<?php echo $task['title']; ?>">
+        <input name="title" type="text"  id="inputTitle" class="form-control" placeholder="Название" value="<?php echo filter($task['title']); ?>">
         <label for="inputContent" class="sr-only">Контент</label>
-        <textarea name="content" class="form-control" cols="30" rows="10" placeholder="Текст"><?php echo $task['content']; ?></textarea>
+        <textarea name="content" class="form-control" cols="30" rows="10" placeholder="Текст"><?php echo filter($task['content']); ?></textarea>
         <input name="image" type="file">
         <input type="hidden" name="id" value="<?php echo $task['id']; ?>">
         
         <!-- если у задачи есть изображение, выводим его и передаём его имя в скрытом поле -->
         <?php if($task['image']) : ?>
-          <img src="uploads/<?php echo $task['image']; ?>" alt="" width="300" class="mb-3">
-          <input type="hidden" name="current_image" value="<?php echo $task['image']; ?>">
+          <img src="uploads/<?php echo filter($task['image']); ?>" alt="" width="300" class="mb-3">
+          <input type="hidden" name="current_image" value="<?php echo filter($task['image']); ?>">
 
         <!-- если нет, выводим дефолтную картинку -->
         <?php else : ?>

@@ -1,13 +1,10 @@
 <?php
-session_start();
+require_once 'config.php';
+// проверяем авторизацию
+if(!authorize('user', 'UserHash', $pdo)) redirect('/login-form.php');
 
-unset($_SESSION['user']);
+// выход из системы
+logout('user', 'UserHash');
 
-if($_COOKIE['UserHash']){
-	setcookie('UserHash', '', time() - 3600);
-}
-
-session_destroy();
-
-header("Location: /login-form.php");
+redirect('/login-form.php');
 ?>

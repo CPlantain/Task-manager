@@ -1,4 +1,9 @@
+<?php
+require_once 'config.php';
+// проверяем, авторизован ли пользователь
+if(authorize('user', 'UserHash', $pdo)) redirect('/list.php');
 
+?>
 <!doctype html>
 <html lang="en">
   <head>

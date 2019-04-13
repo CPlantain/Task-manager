@@ -1,59 +1,35 @@
 <?php
-session_start();
-
-// подключение к БД
-try{
-	$pdo = new 
-	PDO("mysql:host=localhost;dbname=task_manager;charset=utf8", 'root', '');
-}catch(PDOException $e){
-	die("Не могу подключиться к базе данных");
-}
+require_once 'config.php';
+// проверяем авторизацию
+if(!authorize('user', 'UserHash', $pdo)) redirect('/login-form.php');
 
 // сохраняем данные в удобном виде
-$title = $_POST['title'];
-$content = $_POST['content'];
+$title = filter($_POST['title']);
+$content = filter($_POST['content']);
 $image = $_FILES['image'];
-$current_image = $_POST['current_image'];
+$current_image = filter($_POST['current_image']);
 $user_id = $_SESSION['user']['id'];
 $id = $_POST['id'];
 
 // проверка полей на пустоту
-foreach ($_POST as $field) {
-	if(strlen($field) <= 0){
-		$errorMessage = 'пожалуйста заполните все поля';
-	}
-}
+$required = [$title, $content];
+if(!checkEmpty($required)) $errorMessage = 'пожалуйста заполните все поля';
 
 // проверка формата и размера изображения
 if(!$errorMessage){
 	if(!empty($image['name'])){
-		if(($image['type'] != 'image/png') && ($image['type'] != 'image/jpeg') && ($image['type'] != 'image/jpg')){
-			$errorMessage = 'неверный формат изображения';
-		} else if($image['size'] > 5 * 1024 * 1024){
-			$errorMessage = 'файл слишком большой';
-		}
+		if(!validateImage($image)) $errorMessage = 'Ошибка загрузки изображения! Допустимые форматы: jpeg, jpg, png. Максимальный размер изображения: 5 МБ.';
 	}
 }
 
 // вывод ошибок
-if($errorMessage){
-	require "errors.php";
-	exit();
-}
+if($errorMessage) showError($errorMessage);
 
 // удаление старого изображения, генерация имени нового изображения и его загрузка
 if (!empty($image['name'])) {
-	
-	if($current_image){
-		if(file_exists('uploads/' . $current_image)){
-			unlink('uploads/' . $current_image);
-		}
-	}
-	
-	$picName = uniqid() . '.' . substr($image['type'], strlen('image/'));
-	$path = 'uploads/';
-	$destination =  $path . $picName;
-	move_uploaded_file($image['tmp_name'], $destination);
+	if($current_image) deleteImage('uploads/', $current_image);
+
+	$picName = uploadImage('uploads/', $image);
 } else {
 	$picName = $current_image;
 }
@@ -62,14 +38,14 @@ if (!empty($image['name'])) {
 $data = [
 		'title' => $title,
 		'content' => $content,
-		'image' => $picName,
+		'image' => $picName
+		];
+$params = [
 		'id' => $id,
 		'user_id' => $user_id
 		];
 
-$sql = 'UPDATE tasks SET title=:title, content=:content, image=:image WHERE id=:id AND user_id=:user_id';
-$statement = $pdo->prepare($sql);
-$statement->execute($data);
+update($pdo, 'tasks', $data, $params);
 
-
-header("Location: /list.php");
+redirect('/list.php');
+?>

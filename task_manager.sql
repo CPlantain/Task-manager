@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 08 2019 г., 19:26
+-- Время создания: Апр 13 2019 г., 21:46
 -- Версия сервера: 5.7.23
 -- Версия PHP: 7.1.22
 
@@ -41,9 +41,10 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `user_id`, `title`, `content`, `image`) VALUES
-(9, 3, 'qwerty', 'fghfghfghfgh', '5cab6c07e110e.jpeg'),
+(9, 3, 'qwerty123', 'fghfghfghfgh', '5cab6c07e110e.jpeg'),
 (10, 3, 'yhtgrfedwsaq', 'fghfghfghfgh', '5cab6e8021070.jpeg'),
-(20, 3, 'qwertyu', 'qwerty', '5cab75a056145.jpeg');
+(20, 3, 'qwertyu', 'qwerty', '5cab75a056145.jpeg'),
+(21, 3, 'qwertyuio', 'qwertyuiop[', '5cb1b9013cf48.jpeg');
 
 -- --------------------------------------------------------
 
@@ -93,13 +94,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

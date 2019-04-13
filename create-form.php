@@ -1,5 +1,9 @@
-<?php session_start(); ?>
+<?php 
+require_once 'config.php';
 
+if(!authorize('user', 'UserHash', $pdo)) redirect('/login-form.php'); 
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
